@@ -8,6 +8,7 @@
 import Foundation
 
 protocol CollectionPresenterToCollectionView : AnyObject {
+    var presenter : CollectionViewToCollectionPresenter? {get set}
     func itemsSet()
     func noMorePages()
     func foundError(_ error: ApiError)

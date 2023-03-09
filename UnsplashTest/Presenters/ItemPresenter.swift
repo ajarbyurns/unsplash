@@ -8,6 +8,7 @@
 import Foundation
 
 protocol ItemPresenterToItemCell : AnyObject {
+    var presenter : ItemCellToItemPresenter? {get set}
     func imageLoaded(_ imageData : Data)
     func foundError(_ error: ApiError)
 }
@@ -62,7 +63,7 @@ extension ItemPresenter : ItemInteractorToItemPresenter {
     
     func imageDataFetched(_ data: Data, _ key : String) {
         imageDataCache.setObject(data as AnyObject, forKey: key as AnyObject)
-        view?.imageLoaded(imageDataCache.object(forKey: key as AnyObject) as! Data)
+        imgData = data
     }
     
     func foundError(_ error: ApiError) {
