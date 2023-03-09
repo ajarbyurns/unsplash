@@ -36,9 +36,9 @@ class CollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                         
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let layout = ImageCollectionViewLayout()
+        layout.columnCount = cellsPerRow
         layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        layout.itemSize = CGSize(width: view.frame.width/CGFloat(cellsPerRow) - (2 * inset), height: view.frame.height/4)
         collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
     
         if let collectionView = self.collectionView {
@@ -170,6 +170,21 @@ extension CollectionViewController : UICollectionViewDelegate, UICollectionViewD
         }
         cell.layoutIfNeeded()
         return cell
+    }
+    
+}
+
+extension CollectionViewController : ImageLayoutDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let marginsAndInsets = inset * 2 + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + inset * CGFloat(cellsPerRow - 1)
+        let itemWidth = ((collectionView.bounds.size.width - marginsAndInsets) / CGFloat(cellsPerRow)).rounded(.down)
+        
+        let item = presenter?.findItem(indexPath.row)
+        let itemHeight = CGFloat(item?.height ?? 1)/CGFloat(item?.width ?? 1) * itemWidth
+        
+        return CGSize(width: itemWidth, height: itemHeight)
     }
     
 }
